@@ -1,6 +1,8 @@
 
 # grant-oidc
 
+[![npm-version]][npm]
+
 > *`id_token` validation middleware for [Grant][grant]*
 
 **EXPERIMENTAL! DO NOT USE IN PRODUCTION!**
@@ -93,5 +95,8 @@ List of known OpenID Connect providers:
 }
 ```
 
+
+  [npm-version]: https://img.shields.io/npm/v/grant-oidc.svg?style=flat-square (NPM Version)
+  [npm]: https://www.npmjs.com/package/grant-oidc
 
   [grant]: https://github.com/simov/grant
