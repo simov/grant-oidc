@@ -1,0 +1,38 @@
+{
+  "name": "grant-oidc",
+  "version": "0.0.0",
+  "description": "OpenID Connect middleware for Grant",
+  "keywords": [
+    "oauth",
+    "oauth2",
+    "openid",
+    "openid-connect"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/simov/grant-oidc",
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simov/grant-oidc.git"
+  },
+  "dependencies": {
+    "jwk-to-pem": "^2.0.0",
+    "jws": "^3.1.4",
+    "request-compose": "^1.0.0"
+  },
+  "devDependencies": {
+    "request-logs": "0.0.5"
+  },
+  "main": "./consumers/express.js",
+  "files": [
+    "consumers/",
+    "lib/",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {},
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
