@@ -52,6 +52,10 @@ List of known OpenID Connect providers:
     ],
     "callback": "/callback"
   },
+  "asana": {
+    "key": "[APP_ID]",
+    "secret": "[APP_SECRET]"
+  },
   "auth0": {
     "key": "[APP_ID]",
     "secret": "[APP_SECRET]"
@@ -94,6 +98,16 @@ List of known OpenID Connect providers:
   }
 }
 ```
+
+## quirks
+
+- Google issuer URL doesn't have protocol
+
+- Paypal issuer have different domain than the configuration URL
+- Paypal returns the `idp` configuration JSON with wrong _content-type_
+
+- Asana doesn't return `kid` in the header, and a single key is found in `jwks_uri` that should be picked
+- Asana doesn't honor the `nonce` parameter and doesn't embed it in the `id_token`
 
 
   [npm-version]: https://img.shields.io/npm/v/grant-oidc.svg?style=flat-square (NPM Version)
