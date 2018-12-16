@@ -68,6 +68,10 @@ List of known OpenID Connect providers:
     "key": "[APP_ID]",
     "secret": "[APP_SECRET]"
   },
+  "ibm": {
+    "key": "[APP_ID]",
+    "secret": "[APP_SECRET]"
+  },
   "microsoft": {
     "key": "[APP_ID]",
     "secret": "[APP_SECRET]"
