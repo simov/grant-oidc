@@ -46,7 +46,7 @@ module.exports = (config) => async (req, res, next) => {
   }
 
   var nonce = session && session.nonce
-  var app = config[session.provider].key
+  var app = config[session.provider].key || config[session.provider].client_id
   var error = verify({id_token, jwt, idp, jwk, app, nonce})
 
   if (error) {
