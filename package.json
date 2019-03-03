@@ -1,6 +1,6 @@
 {
   "name": "grant-oidc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "OpenID Connect middleware for Grant",
   "keywords": [
     "oauth",
