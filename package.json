@@ -18,20 +18,27 @@
   "dependencies": {
     "jwk-to-pem": "^2.0.0",
     "jws": "^3.1.4",
-    "request-compose": "^1.0.0"
+    "request-compose": "^1.2.1"
   },
   "devDependencies": {
-    "request-logs": "0.0.5"
+    "request-logs": "^1.0.0"
   },
-  "main": "./consumers/express.js",
+  "peerDependencies": {
+    "grant": "^4.6.3"
+  },
+  "main": "./oidc.js",
   "files": [
-    "consumers/",
     "lib/",
     "LICENSE",
+    "oidc.js",
     "package.json",
     "README.md"
   ],
-  "scripts": {},
+  "scripts": {
+    "test": "npm run test:ci",
+    "test:ci": "mocha test/ --recursive",
+    "test:cov": "istanbul cover _mocha -- --recursive"
+  },
   "engines": {
     "node": ">=8.0.0"
   }
