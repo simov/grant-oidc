@@ -15,7 +15,7 @@
 
 ## Middlewares
 
-For Express and Koa grant-profile needs to be mounted after Grant, and before any of the callback URLs defined in your Grant configuration.
+For Express and Koa grant-oidc needs to be mounted after Grant, and before any of the callback URLs defined in your Grant configuration.
 
 ## Express
 
