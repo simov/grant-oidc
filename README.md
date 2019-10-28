@@ -1,43 +1,88 @@
 
 # grant-oidc
 
-[![npm-version]][npm]
+[![npm-version]][npm] [![travis-ci]][travis]
 
 > *`id_token` validation middleware for [Grant][grant]*
-
-**EXPERIMENTAL! DO NOT USE IN PRODUCTION!**
-
-This module implements:
 
 - IdP configuration discovery *(no caching)*
 - IdP public keys discovery *(no caching)*
 - `id_token` validation including its signature
 
-## middleware
+## Configuration
 
-Currently only Express middleware is available:
+> **grant-oidc accepts your Grant [configuration][grant-config]**
+
+## Middlewares
+
+For Express and Koa grant-profile needs to be mounted after Grant, and before any of the callback URLs defined in your Grant configuration.
+
+## Express
 
 ```js
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
-var oidc = require('grant-oidc')
-
+var grant = require('grant-express') // or require('grant').express()
+var oidc = require('grant-oidc').express()
 var config = require('./config.json')
 
-
 express()
-  .use(session({name: 'grant', secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(session({name: 'grant', secret: 'grant', saveUninitialized: true}))
   .use(grant(config))
-  .get('/callback', oidc(config), (req, res) => {
+  .use(oidc(config))
+  .get('/hi', (req, res) => {
     res.end(JSON.stringify(req.session.grant.response, null, 2))
   })
   .listen(3000)
 ```
 
-## config
+## Koa
 
-List of known OpenID Connect providers:
+```js
+var Koa = require('koa')
+var session = require('koa-session')
+var grant = require('grant-koa') // or require('grant').koa()
+var oidc = require('grant-oidc').koa()
+var config = require('./config.json')
+
+var app = new Koa()
+app.keys = ['grant']
+app.use(session(app))
+app.use(grant(config))
+app.use(oidc(config))
+app.use((ctx, next) => {
+  if (ctx.path === '/hi') {
+    ctx.body = JSON.stringify(ctx.session.grant.response, null, 2)
+  }
+})
+app.listen(3000)
+```
+
+## Hapi
+
+```js
+var Hapi = require('hapi')
+var yar = require('yar')
+var grant = require('grant-hapi') // or require('grant').hapi()
+var oidc = require('grant-oidc').hapi()
+var config = require('./config.json')
+
+var server = new Hapi.Server({host: 'localhost', port: 3000})
+
+server.route({method: 'GET', path: '/hi', handler: (req, res) => {
+  return res.response(JSON.stringify(req.yar.get('grant').response, null, 2))
+    .header('content-type', 'text/plain')
+}})
+
+server.register([
+  {plugin: grant(), options: config},
+  {plugin: oidc(), options: config},
+  {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}},
+])
+.then(() => server.start())
+```
+
+## Example
 
 ```json
 {
@@ -50,60 +95,26 @@ List of known OpenID Connect providers:
     "scope": [
       "openid"
     ],
-    "callback": "/callback"
+    "callback": "/hi"
   },
-  "asana": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "auth0": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "authentiq": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "google": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "ibm": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "microsoft": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "okta": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "onelogin": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "paypal": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "salesforce": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "twitch": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  },
-  "yahoo": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
-  }
+  "asana": {"key": "...", "secret": "..."},
+  "auth0": {"key": "...", "secret": "..."},
+  "authentiq": {"key": "...", "secret": "..."},
+  "google": {"key": "...", "secret": "..."},
+  "ibm": {"key": "...", "secret": "..."},
+  "line": {"key": "...", "secret": "..."},
+  "microsoft": {"key": "...", "secret": "..."},
+  "okta": {"key": "...", "secret": "..."},
+  "onelogin": {"key": "...", "secret": "..."},
+  "paypal": {"key": "...", "secret": "..."},
+  "phantauth": {"key": "...", "secret": "..."},
+  "salesforce": {"key": "...", "secret": "..."},
+  "twitch": {"key": "...", "secret": "..."},
+  "yahoo": {"key": "...", "secret": "..." }
 }
 ```
 
-## quirks
+## Quirks
 
 - Google issuer URL doesn't have protocol
 
@@ -115,6 +126,12 @@ List of known OpenID Connect providers:
 
 
   [npm-version]: https://img.shields.io/npm/v/grant-oidc.svg?style=flat-square (NPM Version)
+  [travis-ci]: https://img.shields.io/travis/simov/grant-oidc/master.svg?style=flat-square (Build Status)
+  [coveralls-status]: https://img.shields.io/coveralls/simov/grant-oidc.svg?style=flat-square (Test Coverage)
+
   [npm]: https://www.npmjs.com/package/grant-oidc
+  [travis]: https://travis-ci.org/simov/grant-oidc
+  [coveralls]: https://coveralls.io/r/simov/grant-oidc?branch=master
 
   [grant]: https://github.com/simov/grant
+  [grant-config]: https://github.com/simov/grant#configuration
