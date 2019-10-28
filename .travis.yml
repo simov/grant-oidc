@@ -6,12 +6,12 @@ node_js:
   - 12
   - 10
 
-jobs:
-  include:
-    - stage: coverage
-      node_js: 12
-      script:
-        - npm run test:cov
-        - cat ./coverage/lcov.info | coveralls
+# jobs:
+#   include:
+#     - stage: coverage
+#       node_js: 12
+#       script:
+#         - npm run test:cov
+#         - cat ./coverage/lcov.info | coveralls
 
 sudo: false
